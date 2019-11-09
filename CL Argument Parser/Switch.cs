@@ -19,5 +19,17 @@ namespace CL_Argument_Parser
 			if (_arguments == null) _arguments = new List<string>();
 			_arguments.Add(arg);
 		}
+
+		public override bool Equals(object obj)
+		{
+			var o = obj as Switch;
+			if (o == null) return false;
+			return _name == o._name;
+		}
+
+		public override int GetHashCode()
+		{
+			return _name.GetHashCode();
+		}
 	}
 }

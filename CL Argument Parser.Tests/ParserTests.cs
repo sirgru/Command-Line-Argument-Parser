@@ -52,5 +52,22 @@ namespace CL_Argument_Parser.Tests.ParserTestsNS
 			Assert.IsTrue(result.Switches[0].arguments.Count == 1);
 			Assert.IsTrue(result.Switches[0].arguments[0] == "path");
 		}
+
+		[Test]
+		public void Parse_AllSwitchTypes()
+		{
+			var setup = new Setup(useDash: true, useDoubleDash: true, useSlash: true);
+			var parser = new Parser(setup);
+			var result = parser.Parse(new string[] {"/a", "-a", "-ab", "--abc" });
+
+			Assert.IsTrue(result.Paths.Count == 0);
+			Assert.AreEqual(3, result.Switches.Count);
+			Assert.IsTrue(result.Switches[0].name == "a");
+			Assert.IsTrue(result.Switches[0].arguments.Count == 0);
+			Assert.IsTrue(result.Switches[1].name == "b");
+			Assert.IsTrue(result.Switches[1].arguments.Count == 0);
+			Assert.IsTrue(result.Switches[2].name == "abc");
+			Assert.IsTrue(result.Switches[2].arguments.Count == 0);
+		}
 	}
 }

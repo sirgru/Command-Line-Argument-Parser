@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace CL_Argument_Parser
 {
 	public class Parser
@@ -16,9 +14,9 @@ namespace CL_Argument_Parser
 			_setup = setup;
 		}
 
-		public Result Parse(string[] args)
+		public ParseResult Parse(string[] args)
 		{
-			Result result = new Result();
+			ParseResult result = new ParseResult();
 			Switch lastSwitch = null;
 			foreach (var arg in args) {
 				var (type, value) = SwitchOrNot(arg);
@@ -34,16 +32,13 @@ namespace CL_Argument_Parser
 					break;
 				case SwitchType.Single:
 					foreach (char c in value) {
-						lastSwitch = new Switch(c.ToString());
-						result.switches.Add(lastSwitch);
+						lastSwitch = result.TryAddSwitch(c.ToString());
 					}
 					break;
 				case SwitchType.Multi:
-					lastSwitch = new Switch(value);
-					result.switches.Add(lastSwitch);
+					lastSwitch = result.TryAddSwitch(value);
 					break;
-				default:
-					break;
+				default: throw new Termination("Unhandled case.");
 				}
 			}
 			return result;
@@ -55,19 +50,10 @@ namespace CL_Argument_Parser
 
 		private (SwitchType type, string value) SwitchOrNot(string arg)
 		{
-			if (_setup.useDash && arg.StartsWith('-')) return (SwitchType.Single, arg.Substring(1));
+			if (_setup.useDash && arg.StartsWith('-') && !(_setup.useDoubleDash && arg.StartsWith("--"))) return (SwitchType.Single, arg.Substring(1));
 			if (_setup.useDoubleDash && arg.StartsWith("--")) return (SwitchType.Multi, arg.Substring(2));
 			if (_setup.useSlash && arg.StartsWith("/")) return (SwitchType.Multi, arg.Substring(1));
 			return (SwitchType.None, arg);
 		}
-	}
-
-	public class Result
-	{
-		internal List<string> paths = new List<string>();
-		internal List<Switch> switches = new List<Switch>();
-
-		public IReadOnlyList<string> Paths => paths;
-		public IReadOnlyList<Switch> Switches => switches;
 	}
 }
