@@ -13,7 +13,7 @@ namespace CL_Argument_Parser
 		public readonly bool useDoubleDash;
 
 		/// <summary>
-		/// Use a single slash ('/') for single-letter switches.
+		/// Use a single slash ('/') for multi-letter switches.
 		/// Warning: this can work only on Windows 
 		/// as on UNIX and like it is a valid path.
 		/// </summary>
