@@ -4,15 +4,15 @@ namespace CL_Argument_Parser
 {
 	public class Switch
 	{
-		private readonly string _name;
+		public string name;
 		private List<string> _arguments;
 
-		public string name => _name;
-		public IReadOnlyList<string> arguments => _arguments ?? new List<string>();
+		public IReadOnlyList<string> arguments => _arguments;
+		public int argumentsCount => _arguments == null ? 0 : _arguments.Count;
 
 		public Switch(string name)
 		{
-			_name = name;
+			this.name = name;
 		}
 
 		internal void AddArgument(string arg) {
@@ -24,12 +24,12 @@ namespace CL_Argument_Parser
 		{
 			var o = obj as Switch;
 			if (o == null) return false;
-			return _name == o._name;
+			return name == o.name;
 		}
 
 		public override int GetHashCode()
 		{
-			return _name.GetHashCode();
+			return name.GetHashCode();
 		}
 	}
 }

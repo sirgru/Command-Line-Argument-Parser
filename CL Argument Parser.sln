@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CL Argument Parser", "CL Argument Parser\CL Argument Parser.csproj", "{1AE15E16-7079-4B85-8674-D171B37F4FFE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CL Argument Parser", "CL Argument Parser\CL Argument Parser.csproj", "{1AE15E16-7079-4B85-8674-D171B37F4FFE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CL Argument Parser.Tests", "CL Argument Parser.Tests\CL Argument Parser.Tests.csproj", "{95299E15-3747-477B-8AD4-52363D79AE30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CL Argument Parser.Tests", "CL Argument Parser.Tests\CL Argument Parser.Tests.csproj", "{95299E15-3747-477B-8AD4-52363D79AE30}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
