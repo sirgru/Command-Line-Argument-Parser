@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace CL_Argument_Parser
+namespace CLAP
 {
 	class MultiDictionary<T_Key, T_Values> : IEnumerable<KeyValuePair<T_Key, List<T_Values>>>
 	{

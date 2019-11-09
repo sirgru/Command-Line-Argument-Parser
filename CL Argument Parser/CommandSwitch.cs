@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using System.Text;
 
-namespace CL_Argument_Parser
+namespace CLAP
 {
 	public class CommandSwitch
 	{
@@ -40,6 +41,48 @@ namespace CL_Argument_Parser
 		public bool IsIdentifiedBy(string other)
 		{
 			return _primaryName == other || _alternativeNames.Contains(other); 
+		}
+
+		public void GetHelp(Setup setup, StringBuilder sb)
+		{
+			int startingLength = sb.Length;
+			sb.Append(' ', setup.leftMargin);
+			AddNameWithDashes(_primaryName, setup, sb);
+			if (_alternativeNames != null) {
+				foreach (var altName in _alternativeNames) {
+					sb.Append(", ");
+					AddNameWithDashes(altName, setup, sb);
+				}
+			}
+			// When names are wider than namesWidth, 
+			// Overflow help text to a new line, from that width
+			if (sb.Length - startingLength >= setup.namesWidth) {
+				sb.Append('\n');
+				sb.Append(' ', setup.namesWidth);
+			} else {
+				sb.Append(' ', setup.namesWidth - (sb.Length - startingLength));
+			}
+
+			sb.Append(_help).Append('\n');
+		}
+
+		private void AddNameWithDashes(string name, Setup setup, StringBuilder sb)
+		{
+			if (name.Length == 1) {
+				if (setup.useDash) {
+					sb.Append('-').Append(name);
+					return;
+				}
+			}
+			if (setup.useDoubleDash) {
+				sb.Append("--").Append(name);
+				return;
+			}
+			if (setup.useDoubleDash) {
+				sb.Append('/').Append(name);
+				return;
+			}
+			throw new Termination("Should never reach this.");
 		}
 	}
 }

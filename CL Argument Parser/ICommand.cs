@@ -1,4 +1,4 @@
-namespace CL_Argument_Parser
+namespace CLAP
 {
 	public interface ICommand
 	{

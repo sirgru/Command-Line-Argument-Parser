@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using System.Text;
 
-namespace CL_Argument_Parser
+namespace CLAP
 {
 	public class Command
 	{
@@ -10,6 +11,13 @@ namespace CL_Argument_Parser
 
 		private List<string> _paths = new List<string>();
 		private MultiDictionary<CommandSwitch, string> _switchToArguments = new MultiDictionary<CommandSwitch, string>();
+
+		private Setup _setup;
+
+		public Command(Setup setup)
+		{
+			_setup = setup;
+		}
 
 		public void AddSwitch(CommandSwitch csw)
 		{
@@ -38,6 +46,17 @@ namespace CL_Argument_Parser
 		private CommandSwitch GetCommandSwitch(string switchName)
 		{
 			return _switches.Find(x => x.IsIdentifiedBy(switchName));
+		}
+
+		public string GetHelp()
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.Append("All available switches:\n\n");
+
+			foreach (var sw in _switches) {
+				sw.GetHelp(_setup, sb);
+			}
+			return sb.ToString();
 		}
 	}
 

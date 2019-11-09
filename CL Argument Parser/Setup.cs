@@ -1,4 +1,4 @@
-namespace CL_Argument_Parser
+namespace CLAP
 {
 	public class Setup
     {
@@ -19,11 +19,27 @@ namespace CL_Argument_Parser
 		/// </summary>
 		public readonly bool useSlash;
 
-		public Setup(bool useDash = true, bool useDoubleDash = true, bool useSlash = false)
+		/// <summary>
+		/// Width reserved for names when displaying help
+		/// </summary>
+		public readonly int namesWidth;
+
+		/// <summary>
+		/// Width of the left margin when displaying help.
+		/// </summary>
+		public readonly int leftMargin;
+
+		public Setup(bool useDash = true, bool useDoubleDash = true, bool useSlash = false, int namesWidth = 26, int leftMargin = 4)
 		{
 			this.useDash = useDash;
 			this.useDoubleDash = useDoubleDash;
 			this.useSlash = useSlash;
+
+			if (namesWidth < 1) throw new Termination("Invalid value for namesWidth: must be greater than 0.");
+			this.namesWidth = namesWidth;
+
+			if (leftMargin < 1) throw new Termination("Invalid value for leftMargin: must be greater than 0.");
+			this.leftMargin = leftMargin;
 		}
 	}
 }

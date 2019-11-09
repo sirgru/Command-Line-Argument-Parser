@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Runtime.Serialization;
 
-namespace CL_Argument_Parser
+namespace CLAP
 {
 	[Serializable]
 	internal class InputException : Exception

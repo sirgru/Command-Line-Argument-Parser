@@ -1,6 +1,6 @@
 using NUnit.Framework;
 
-namespace CL_Argument_Parser.Tests.ParserTestsNS
+namespace CLAP.Tests.ParserTestsNS
 {
 
 	[TestFixture]

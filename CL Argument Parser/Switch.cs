@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace CL_Argument_Parser
+namespace CLAP
 {
 	public class Switch
 	{

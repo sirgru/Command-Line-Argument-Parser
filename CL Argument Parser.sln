@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CL Argument Parser", "CL Ar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CL Argument Parser.Tests", "CL Argument Parser.Tests\CL Argument Parser.Tests.csproj", "{95299E15-3747-477B-8AD4-52363D79AE30}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CL Argument Parser.Runner", "CL Argument Parser.Runner\CL Argument Parser.Runner.csproj", "{E97801DB-BED7-4177-8E9F-056FE8AD4D3E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{95299E15-3747-477B-8AD4-52363D79AE30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95299E15-3747-477B-8AD4-52363D79AE30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95299E15-3747-477B-8AD4-52363D79AE30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E97801DB-BED7-4177-8E9F-056FE8AD4D3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E97801DB-BED7-4177-8E9F-056FE8AD4D3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E97801DB-BED7-4177-8E9F-056FE8AD4D3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E97801DB-BED7-4177-8E9F-056FE8AD4D3E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

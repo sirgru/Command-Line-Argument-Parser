@@ -1,13 +1,8 @@
-namespace CL_Argument_Parser
+namespace CLAP
 {
 	public class Parser
 	{
 		private Setup _setup;
-
-		public Parser()
-		{
-			_setup = new Setup();
-		}
 
 		public Parser(Setup setup)
 		{

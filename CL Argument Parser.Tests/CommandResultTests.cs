@@ -1,6 +1,6 @@
 using NUnit.Framework;
 
-namespace CL_Argument_Parser.Tests.CommandTestsNS
+namespace CLAP.Tests.CommandTestsNS
 {
 	[TestFixture]
 	public class CommandTests
@@ -8,11 +8,12 @@ namespace CL_Argument_Parser.Tests.CommandTestsNS
 		[Test]
 		public void SimpleSW_AcceptsArg()
 		{
-			var parser = new Parser();
+			var setup = new Setup();
+			var parser = new Parser(setup);
 			var parserResult = parser.Parse(new string[] {"p1", "-s", "switch-arg", "--switch",  });
 			var sw1 = new CommandSwitch("switch", acceptsArguments: true);
 			sw1.AddAlternativeName("s");
-			var command = new Command();
+			var command = new Command(setup);
 			command.AddSwitch(sw1);
 			var result = command.Adapt(parserResult);
 
@@ -25,11 +26,12 @@ namespace CL_Argument_Parser.Tests.CommandTestsNS
 		[Test]
 		public void SimpleSW_NoArg()
 		{
-			var parser = new Parser();
+			var setup = new Setup();
+			var parser = new Parser(setup);
 			var parserResult = parser.Parse(new string[] {"-s", "--switch", "commandArg" });
 			var sw1 = new CommandSwitch("switch", acceptsArguments: false);
 			sw1.AddAlternativeName("s");
-			var command = new Command();
+			var command = new Command(setup);
 			command.AddSwitch(sw1);
 			var result = command.Adapt(parserResult);
 
