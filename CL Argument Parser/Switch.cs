@@ -2,15 +2,18 @@ using System.Collections.Generic;
 
 namespace CLAP
 {
-	public class Switch
+	public class TextSwitch
 	{
 		public string name;
 		private List<string> _arguments;
+		private List<string> _tightArguments;
 
 		public IReadOnlyList<string> arguments => _arguments;
-		public int argumentsCount => _arguments == null ? 0 : _arguments.Count;
+		public IReadOnlyList<string> tightArguments => _tightArguments;
+		public int argumentsCount => _arguments?.Count ?? 0;
+		public int tightArgumentsCount => _tightArguments?.Count ?? 0;
 
-		public Switch(string name)
+		public TextSwitch(string name)
 		{
 			this.name = name;
 		}
@@ -20,9 +23,15 @@ namespace CLAP
 			_arguments.Add(arg);
 		}
 
+		internal void AddTightArgument(string arg)
+		{
+			if (_tightArguments == null) _tightArguments = new List<string>();
+			_tightArguments.Add(arg);
+		}
+
 		public override bool Equals(object obj)
 		{
-			var o = obj as Switch;
+			var o = obj as TextSwitch;
 			if (o == null) return false;
 			return name == o.name;
 		}

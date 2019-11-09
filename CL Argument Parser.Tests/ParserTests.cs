@@ -13,13 +13,13 @@ namespace CLAP.Tests.ParserTestsNS
 			var parser = new Parser(setup);
 			var result = parser.Parse(new string[] {"path1", "path2", "--switch", "switch-arg" });
 
-			Assert.IsTrue(result.Paths.Count == 2);
-			Assert.IsTrue(result.Paths[0] == "path1");
-			Assert.IsTrue(result.Paths[1] == "path2");
-			Assert.IsTrue(result.Switches.Count == 1);
-			Assert.IsTrue(result.Switches[0].name == "switch");
-			Assert.IsTrue(result.Switches[0].argumentsCount == 1);
-			Assert.IsTrue(result.Switches[0].arguments[0] == "switch-arg");
+			Assert.AreEqual(2, result.Paths.Count);
+			Assert.AreEqual("path1", result.Paths[0]);
+			Assert.AreEqual("path2", result.Paths[1]);
+			Assert.AreEqual(1, result.Switches.Count);
+			Assert.AreEqual("switch", result.Switches[0].name);
+			Assert.AreEqual(1, result.Switches[0].argumentsCount);
+			Assert.AreEqual("switch-arg", result.Switches[0].arguments[0]);
 		}
 
 		[Test]
@@ -29,15 +29,15 @@ namespace CLAP.Tests.ParserTestsNS
 			var parser = new Parser(setup);
 			var result = parser.Parse(new string[] {"path1", "path2", "-sw", "switch-arg" });
 
-			Assert.IsTrue(result.Paths.Count == 2);
-			Assert.IsTrue(result.Paths[0] == "path1");
-			Assert.IsTrue(result.Paths[1] == "path2");
-			Assert.IsTrue(result.Switches.Count == 2);
-			Assert.IsTrue(result.Switches[0].name == "s");
-			Assert.IsTrue(result.Switches[1].name == "w");
-			Assert.IsTrue(result.Switches[0].argumentsCount == 0);
-			Assert.IsTrue(result.Switches[1].argumentsCount == 1);
-			Assert.IsTrue(result.Switches[1].arguments[0] == "switch-arg");
+			Assert.AreEqual(2, result.Paths.Count);
+			Assert.AreEqual("path1", result.Paths[0]);
+			Assert.AreEqual("path2", result.Paths[1]);
+			Assert.AreEqual(2, result.Switches.Count);
+			Assert.AreEqual("s", result.Switches[0].name);
+			Assert.AreEqual("w", result.Switches[1].name);
+			Assert.AreEqual(0, result.Switches[0].argumentsCount);
+			Assert.AreEqual(1, result.Switches[1].argumentsCount);
+			Assert.AreEqual("switch-arg", result.Switches[1].arguments[0]);
 		}
 
 		[Test]
@@ -47,11 +47,11 @@ namespace CLAP.Tests.ParserTestsNS
 			var parser = new Parser(setup);
 			var result = parser.Parse(new string[] {"/ab", "path" });
 
-			Assert.IsTrue(result.Paths.Count == 0);
-			Assert.IsTrue(result.Switches.Count == 1);
-			Assert.IsTrue(result.Switches[0].name == "ab");
-			Assert.IsTrue(result.Switches[0].argumentsCount == 1);
-			Assert.IsTrue(result.Switches[0].arguments[0] == "path");
+			Assert.AreEqual(0, result.Paths.Count);
+			Assert.AreEqual(1, result.Switches.Count);
+			Assert.AreEqual("ab", result.Switches[0].name);
+			Assert.AreEqual(1, result.Switches[0].argumentsCount);
+			Assert.AreEqual("path", result.Switches[0].arguments[0]);
 		}
 
 		[Test]
@@ -61,14 +61,33 @@ namespace CLAP.Tests.ParserTestsNS
 			var parser = new Parser(setup);
 			var result = parser.Parse(new string[] {"/a", "-a", "-ab", "--abc" });
 
-			Assert.IsTrue(result.Paths.Count == 0);
+			Assert.AreEqual(0, result.Paths.Count);
 			Assert.AreEqual(3, result.Switches.Count);
-			Assert.IsTrue(result.Switches[0].name == "a");
-			Assert.IsTrue(result.Switches[0].argumentsCount == 0);
-			Assert.IsTrue(result.Switches[1].name == "b");
-			Assert.IsTrue(result.Switches[1].argumentsCount == 0);
-			Assert.IsTrue(result.Switches[2].name == "abc");
-			Assert.IsTrue(result.Switches[2].argumentsCount == 0);
+			Assert.AreEqual("a", result.Switches[0].name);
+			Assert.AreEqual(0, result.Switches[0].argumentsCount);
+			Assert.AreEqual("b", result.Switches[1].name);
+			Assert.AreEqual(0, result.Switches[1].argumentsCount);
+			Assert.AreEqual("abc", result.Switches[2].name);
+			Assert.AreEqual(0, result.Switches[2].argumentsCount);
+		}
+
+		[Test]
+		public void Parse_SwichArgumentAfterEq()
+		{
+			var setup = new Setup();
+			var parser = new Parser(setup);
+			var result = parser.Parse(new string[] {"-a=111", "--baz=222" });
+
+			Assert.AreEqual(0, result.Paths.Count);
+			Assert.AreEqual(2, result.Switches.Count);
+			Assert.AreEqual("a", result.Switches[0].name);
+			Assert.AreEqual(0, result.Switches[0].argumentsCount);
+			Assert.AreEqual(1, result.Switches[0].tightArgumentsCount);
+			Assert.AreEqual("111", result.Switches[0].tightArguments[0]);
+			Assert.AreEqual("baz", result.Switches[1].name);
+			Assert.AreEqual(0, result.Switches[1].argumentsCount);
+			Assert.AreEqual(1, result.Switches[1].tightArgumentsCount);
+			Assert.AreEqual("222", result.Switches[1].tightArguments[0]);
 		}
 	}
 }

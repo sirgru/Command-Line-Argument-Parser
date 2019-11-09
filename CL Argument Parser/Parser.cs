@@ -1,5 +1,8 @@
 namespace CLAP
 {
+	/// <summary>
+	/// Class that transforms input text into intermeidate form
+	/// </summary>
 	public class Parser
 	{
 		private Setup _setup;
@@ -9,10 +12,15 @@ namespace CLAP
 			_setup = setup;
 		}
 
+		/// <summary>
+		/// Activation method
+		/// </summary>
+		/// <exception cref="Termination">Internal System Error</exception>
+		/// <exception cref="InputException">Input was invalid</exception>
 		public ParseResult Parse(string[] args)
 		{
 			ParseResult result = new ParseResult();
-			Switch lastSwitch = null;
+			TextSwitch lastSwitch = null;
 			foreach (var arg in args) {
 				var (type, value) = SwitchOrNot(arg);
 
@@ -26,9 +34,7 @@ namespace CLAP
 					}
 					break;
 				case SwitchType.Single:
-					foreach (char c in value) {
-						lastSwitch = result.TryAddSwitch(c.ToString());
-					}
+					lastSwitch = result.TryAddManySwitches(value);
 					break;
 				case SwitchType.Multi:
 					lastSwitch = result.TryAddSwitch(value);

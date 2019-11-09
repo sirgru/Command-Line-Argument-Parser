@@ -10,9 +10,9 @@ namespace CLAP.Tests.CommandTestsNS
 		{
 			var setup = new Setup();
 			var parser = new Parser(setup);
-			var parserResult = parser.Parse(new string[] {"p1", "-s", "switch-arg", "--switch",  });
+			var parserResult = parser.Parse(new string[] {"p1", "-s", "switch-arg", "--switch" });
 			var sw1 = new CommandSwitch("switch");
-			sw1.AddArgument("sw-arg", isOptional: false);
+			sw1.AddParameter("param", isOptional: false);
 			sw1.AddAlternativeName("s");
 			var command = new Command(setup);
 			command.AddSwitch(sw1);
@@ -21,7 +21,10 @@ namespace CLAP.Tests.CommandTestsNS
 			Assert.AreEqual(1, result.paths.Count);
 			Assert.AreEqual("p1", result.paths[0]);
 			Assert.AreEqual(1, result.switches.Count);
-			Assert.AreEqual("switch-arg", result.switches[sw1][0]);
+			Assert.AreEqual("switch", result.switches[0].commandSwitch.primaryName);
+			Assert.AreEqual("s", result.switches[0].commandSwitch.altNames[0]);
+			Assert.AreEqual("param", result.switches[0].arguments[0].paramName);
+			Assert.AreEqual("switch-arg", result.switches[0].arguments[0].argName);
 		}
 
 		[Test]
@@ -74,13 +77,13 @@ namespace CLAP.Tests.CommandTestsNS
 			var parser = new Parser(setup);
 			var parserResult = parser.Parse(new string[] {"p1", "-s", "switch-arg", "--switch",  });
 			var sw1 = new CommandSwitch("switch");
-			sw1.AddArgument("sw-arg", isOptional: true);
+			sw1.AddParameter("sw-arg", isOptional: true);
 			sw1.AddAlternativeName("s");
 			var command = new Command(setup);
 			command.AddSwitch(sw1);
 			var result = command.Adapt(parserResult);
 
-			Assert.AreEqual("switch-arg", result.switches[sw1][0]);
+			Assert.AreEqual("switch-arg", result.switches[0].arguments[0].argName);
 		}
 
 		[Test]
@@ -90,7 +93,7 @@ namespace CLAP.Tests.CommandTestsNS
 			var parser = new Parser(setup);
 			var parserResult = parser.Parse(new string[] {"p1", "-s", "switch-arg", "--switch", "another" });
 			var sw1 = new CommandSwitch("switch");
-			sw1.AddArgument("sw-arg", isOptional: true);
+			sw1.AddParameter("sw-arg", isOptional: true);
 			sw1.AddAlternativeName("s");
 			var command = new Command(setup);
 			command.AddSwitch(sw1);
@@ -104,8 +107,8 @@ namespace CLAP.Tests.CommandTestsNS
 			var setup = new Setup();
 
 			var sw1 = new CommandSwitch("n");
-			sw1.AddArgument("ag1");
-			sw1.AddArgument("ag2", isOptional: true);
+			sw1.AddParameter("ag1");
+			sw1.AddParameter("ag2", isOptional: true);
 			sw1.AddHelp("Lorem");
 
 			var command = new Command(setup);
@@ -117,6 +120,39 @@ namespace CLAP.Tests.CommandTestsNS
     -n <ag1> [ag2]        Lorem
 ".Replace("\r\n", "\n");
 			Assert.AreEqual(expected, actual);
+		}
+
+		[Test]
+		public void Argument_Tight_Help()
+		{
+			var setup = new Setup();
+
+			var sw1 = new CommandSwitch("n");
+			sw1.AddParameter("p1", isOptional: true);
+			sw1.AddHelp("Lorem");
+
+			var command = new Command(setup);
+			command.AddSwitch(sw1);
+
+			var actual = command.GetHelp();
+			var expected = @"All available switches:
+
+    -n[=p1]               Lorem
+".Replace("\r\n", "\n");
+			Assert.AreEqual(expected, actual);
+		}
+
+		[Test]
+		public void TooManyArgumentsShortSyntax_Throws()
+		{
+			var setup = new Setup();
+			var parser = new Parser(setup);
+			var parserResult = parser.Parse(new string[] {"p1", "-s=111" });
+			var sw1 = new CommandSwitch("s");
+			var command = new Command(setup);
+			command.AddSwitch(sw1);
+
+			Assert.Throws<InputException>(() => command.Adapt(parserResult));
 		}
 	}
 }

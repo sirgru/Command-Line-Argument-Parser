@@ -3,6 +3,9 @@ using System.Text;
 
 namespace CLAP
 {
+	/// <summary>
+	/// Contains logical information about commands
+	/// </summary>
 	public class Command
 	{
 		private static readonly IReadOnlyList<string> _empty = new List<string>();
@@ -24,6 +27,11 @@ namespace CLAP
 			_switches.Add(csw);
 		}
 
+		/// <summary>
+		/// Main parsing method
+		/// </summary>
+		/// <exception cref="Termination">Internal System Error</exception>
+		/// <exception cref="InputException">Input was invalid</exception>
 		public CommandResult Adapt(ParseResult parseResult)
 		{
 			foreach (var path in parseResult.paths) {
@@ -35,9 +43,11 @@ namespace CLAP
 
 				if (sw.acceptsArguments) {
 					_switchToArguments.AddRange(sw, textSwitch.arguments ?? _empty);
+					_switchToArguments.AddRange(sw, textSwitch.tightArguments ?? _empty);
 				}
 				else {
 					_paths.AddRange(textSwitch.arguments ?? _empty);
+					if (textSwitch.tightArguments != null) throw new InputException("Switch " + textSwitch.name + " does not accept arguments.");
 				}
 			}
 			return new CommandResult(_paths, _switchToArguments.backing);
@@ -48,10 +58,10 @@ namespace CLAP
 			return _switches.Find(x => x.IsIdentifiedBy(switchName));
 		}
 
-		public string GetHelp()
+		public string GetHelp(string header = null)
 		{
 			StringBuilder sb = new StringBuilder();
-			sb.Append("All available switches:\n\n");
+			sb.Append(header ?? "All available switches:\n\n");
 
 			foreach (var sw in _switches) {
 				sw.GetHelp(_setup, sb);
