@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace CLAP
 {
 	[Serializable]
-	internal class Termination : Exception
+	public class Termination : Exception
 	{
 		public Termination()
 		{

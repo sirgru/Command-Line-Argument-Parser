@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace CLAP
 {
 	[Serializable]
-	internal class InputException : Exception
+	public class InputException : Exception
 	{
 		private object p;
 

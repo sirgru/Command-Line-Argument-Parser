@@ -7,16 +7,38 @@ namespace CLAP
 	{
 		private string			_primaryName;
 		private HashSet<string> _alternativeNames;
-		private bool			_acceptsArguments;
+		private List<string>	_argumentNames = new List<string>();
+		private List<bool>		_argumentOptionality = new List<bool>();
+		private bool            _lastAddedArgumentWasOptional = false;
 		private string			_help;
 
 		public string primaryName => _primaryName;
-		public bool acceptsArguments => _acceptsArguments;
+		public bool acceptsArguments => _argumentNames?.Count > 0;
+		public int argumentsCount => _argumentNames?.Count ?? 0;
 
-		public CommandSwitch(string primaryName, bool acceptsArguments)
+		public CommandSwitch(string primaryName)
 		{
 			_primaryName = primaryName;
-			_acceptsArguments = acceptsArguments;
+		}
+
+		public void AddArgument(string argName, bool isOptional = false)
+		{
+			if (_lastAddedArgumentWasOptional && isOptional == false) {
+				throw new Termination("Can't add non-optional argument after optional argument");
+			}
+			_lastAddedArgumentWasOptional = isOptional;
+
+			_argumentNames.Add(argName);
+			_argumentOptionality.Add(isOptional);
+		}
+
+		public (int max, int min) GetOptionalityRange()
+		{
+			int i = 0;
+			while (i < _argumentOptionality.Count && _argumentOptionality[i] == false) {
+				i++;
+			}
+			return (_argumentOptionality.Count, i);
 		}
 
 		public void AddAlternativeName(string altName)
@@ -54,6 +76,17 @@ namespace CLAP
 					AddNameWithDashes(altName, setup, sb);
 				}
 			}
+
+			for (int i = 0; i < _argumentNames.Count; i++) {
+				if (sb[sb.Length - 1] != ' ') sb.Append(' ');
+				if (_argumentOptionality[i]) {
+					sb.Append('[').Append(_argumentNames[i]).Append(']').Append(' ');
+				}
+				else {
+					sb.Append('<').Append(_argumentNames[i]).Append('>').Append(' ');
+				}
+			}
+
 			// When names are wider than namesWidth, 
 			// Overflow help text to a new line, from that width
 			if (sb.Length - startingLength >= setup.namesWidth) {

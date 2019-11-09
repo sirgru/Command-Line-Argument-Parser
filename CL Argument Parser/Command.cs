@@ -59,16 +59,4 @@ namespace CLAP
 			return sb.ToString();
 		}
 	}
-
-	public class CommandResult
-	{
-		public IReadOnlyList<string> paths { get; private set; }
-		public IReadOnlyDictionary<CommandSwitch, List<string>> switches { get; private set; }
-
-		public CommandResult(IReadOnlyList<string> paths, IReadOnlyDictionary<CommandSwitch, List<string>> switches)
-		{
-			this.paths = paths;
-			this.switches = switches;
-		}
-	}
 }
