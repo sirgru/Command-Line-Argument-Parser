@@ -1,5 +1,6 @@
 using CLAP;
 using System;
+using System.Text;
 
 namespace CL_Argument_Parser.Runner
 {
@@ -7,30 +8,21 @@ namespace CL_Argument_Parser.Runner
     {
         static void Main(string[] args)
         {
-			// Showing the defaults
-			var setup = new Setup(useDash: true, useDoubleDash: true, useSlash: false);
-			// Create a parser
-			var parser = new Parser(setup);
-			// Parse the input. The process is not complete, parserResult contains only
-			// results without semantic meaning 
-			var parserResult = parser.Parse(new string[] {"p1", "-s", "switch-arg", "--switch",  });
+			var swA = new CommandSwitch(primaryName: "AAA", shortName: 'a');
+			swA.AddParameter(arity: Arity.One, name: "a-param");
+			swA.SetHelp("Help for A.");
 
-			// Create a switch
-			var sw1 = new CommandSwitch("switch");
-			// Add alternative name for the switch
-			sw1.AddAlternativeName("s");
-			// Add an optional parameter for the switch
-			sw1.AddParameter("param", isOptional: true);
-			// Add help for that switch
-			sw1.AddHelp("Help here.");
+			var swB = new CommandSwitch(primaryName: "be");
+			swB.AddParameter(arity: Arity.NoneOrOne, name: "b-param");
+			swB.SetHelp("Help for B.");
 
-			// Create a command, which will transform the parse results to the meaningful format
-			var command = new Command(setup);
-			command.AddSwitch(sw1);
-			// result is what we can use
-			var result = command.Adapt(parserResult);
+			var parser = new Parser();
+			parser.AddSwitch(swA);
+			parser.AddSwitch(swB);
 
-			Console.WriteLine(command.GetHelp());
+			StringBuilder sb = new StringBuilder();
+			parser.GetHelp(setup: new Setup(), builder: sb);
+			Console.WriteLine(sb.ToString());
 		}
     }
 }

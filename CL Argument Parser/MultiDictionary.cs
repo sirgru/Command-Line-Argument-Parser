@@ -54,7 +54,5 @@ namespace CLAP
 		{
 			return GetEnumerator();
 		}
-
 	}
-
 }
