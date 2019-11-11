@@ -93,7 +93,7 @@ namespace CLAP.Tests.CommandSwitchTesterNS
 		{
 			var sw1 = new CommandSwitch("switch");
 			sw1.SetHelp("Help here");
-			sw1.AddParameter(Arity.Many, "p");
+			sw1.AddParameter(Arity.Any, "p");
 
 			StringBuilder sb = new StringBuilder();
 			sw1.GetHelp(new Setup(), sb);
@@ -143,5 +143,19 @@ namespace CLAP.Tests.CommandSwitchTesterNS
 			var expected = " -s --alternative         Help here\n";
 			Assert.AreEqual(expected, actual);
 		}
+
+		//[Test]
+		//public void GetHelp_WithAltNamesNoLongname_CorrectDisplay()
+		//{
+		//	var sw1 = new CommandSwitch("s");
+		//	sw1.AddAlternativeNames("alternative");
+		//	sw1.SetHelp("Help here");
+
+		//	StringBuilder sb = new StringBuilder();
+		//	sw1.GetHelp(new Setup(), sb);
+		//	var actual = sb.ToString();
+		//	var expected = " -s --alternative         Help here\n";
+		//	Assert.AreEqual(expected, actual);
+		//}
 	}
 }

@@ -6,7 +6,8 @@ namespace CLAP.Tests.ParserTesterNS
 	public class ParserTester
 	{
 		[Test]
-		public void PathsOnly() {
+		public void PathsOnly()
+		{
 			var parser = new Parser();
 			var result = parser.Parse(new string[] {"path1", "path2"});
 
@@ -175,7 +176,7 @@ namespace CLAP.Tests.ParserTesterNS
 		{
 			var parser = new Parser();
 			var swA = new CommandSwitch("a");
-			swA.AddParameter(Arity.Many, "ones");
+			swA.AddParameter(Arity.Any, "ones");
 			parser.AddSwitch(swA);
 
 			var result = parser.Parse(new string[] {"-a", "111", "222"});
@@ -193,7 +194,7 @@ namespace CLAP.Tests.ParserTesterNS
 		{
 			var parser = new Parser();
 			var swA = new CommandSwitch("a");
-			swA.AddParameter(Arity.Many, "ones");
+			swA.AddParameter(Arity.Any, "ones");
 			parser.AddSwitch(swA);
 
 			var result = parser.Parse(new string[] {"-a", "111", "222", "--", "333" });
@@ -213,7 +214,7 @@ namespace CLAP.Tests.ParserTesterNS
 			var parser = new Parser();
 			var swA = new CommandSwitch("a");
 			var swBE = new CommandSwitch("be");
-			swA.AddParameter(Arity.Many, "ones");
+			swA.AddParameter(Arity.Any, "ones");
 			swBE.AddParameter(Arity.NoneOrOne, "threes");
 			parser.AddSwitch(swA);
 			parser.AddSwitch(swBE);
@@ -270,7 +271,7 @@ namespace CLAP.Tests.ParserTesterNS
 			swA.AddParameter(Arity.One, "ones");
 			parser.AddSwitch(swA);
 
-			Assert.Throws<InvalidInput>(() => parser.Parse(new string[] {"-a", "111", "--AA", "111"}));
+			Assert.Throws<InvalidInput>(() => parser.Parse(new string[] { "-a", "111", "--AA", "111" }));
 		}
 
 		[Test]

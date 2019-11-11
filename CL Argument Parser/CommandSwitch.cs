@@ -5,7 +5,7 @@ namespace CLAP
 {
 	public enum Arity
 	{
-		None, One, NoneOrOne, Many
+		None, One, NoneOrOne, Any
 	}
 
 	public class CommandSwitch
@@ -118,7 +118,9 @@ namespace CLAP
 				sb.Append(' ', setup.namesWidth - namesWidth);
 			}
 
-			sb.Append(_help).Append('\n');
+			var (help, hasMoreLines) = TextFormatter.Format(_help, setup.lineWidth, setup.namesWidth, 0, setup.lineWidth - setup.namesWidth, false);
+			sb.Append(help).Append('\n');
+			if (hasMoreLines) sb.Append('\n');
 		}
 
 		private void AppendShortName(StringBuilder sb)
@@ -164,7 +166,7 @@ namespace CLAP
 				sb.Append('[').Append('=').Append(_parameterName).Append(']').Append(' ');
 				return;
 
-			case Arity.Many:
+			case Arity.Any:
 				// Make sure there is space between name and params
 				if (sb[sb.Length - 1] != ' ') sb.Append(' ');
 				sb.Append('<').Append(_parameterName).Append("...").Append('>').Append(' ');

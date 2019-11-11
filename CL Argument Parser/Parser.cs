@@ -122,7 +122,7 @@ namespace CLAP
 				case Arity.None:		psp = PathSplit.Maybe; break;
 				case Arity.One:			psp = PathSplit.NotForOne; break;
 				case Arity.NoneOrOne:	psp = PathSplit.Maybe; break;
-				case Arity.Many:		psp = PathSplit.Not; break;
+				case Arity.Any:		psp = PathSplit.Not; break;
 				default: throw new Termination("Should not reach this.");
 				}
 				result.AddSwitch(sw);
